@@ -75,6 +75,11 @@
         "app:build": [
           "composer install --no-dev --classmap-authoritative --no-scripts",
           "bin/console assets:install public"
+        ],
+        "app:deploy": [
+          "bin/console doctrine:database:create --if-not-exists",
+          "bin/console doctrine:migrations:migrate --query-time --no-interaction",
+          "bin/console cache:clear"
         ]
     },
     "conflict": {
