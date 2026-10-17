@@ -48,6 +48,7 @@ COPY --link --from=ghcr.io/symfony-cli/symfony-cli:latest /usr/local/bin/symfony
 RUN install-php-extensions xdebug
 USER ${USER}
 
+
 # ------------------------------------------------------------------------------
 # 🚀 Production environment
 # ------------------------------------------------------------------------------
@@ -63,3 +64,6 @@ RUN mkdir -p /app/var /app/config/jwt && \
 
 USER ${USER}
 RUN composer app:build
+
+ENTRYPOINT [ "/bin/sh", "/app/.docker/post-install.sh" ]
+CMD [ "frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile" ]
