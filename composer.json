@@ -71,6 +71,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "app:build": [
+          "composer install --no-dev --classmap-authoritative --no-scripts",
+          "bin/console assets:install public"
         ]
     },
     "conflict": {
