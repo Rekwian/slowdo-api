@@ -1,0 +1,28 @@
+name: slowdo-api
+
+networks:
+  traefik-network:
+    external: true
+
+services:
+  app:
+    restart: always
+    image: rekwian/slowdo-api:develop
+    environment:
+      XDEBUG_MODE: ${XDEBUG_MODE:-develop,debug,trace}
+      XDEBUG_START_WITH_REQUEST: ${XDEBUG_START_WITH_REQUEST:-trigger}
+      XDEBUG_IDEKEY: ${XDEBUG_IDEKEY:-DEBUG}
+      XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST:-host.docker.internal}
+    build:
+      target: dev
+    volumes:
+      - .:/app
+      - .docker/php-dev.ini:/usr/local/etc/php/conf.d/z-02-php-app-dev.ini
+    labels:
+      - traefik.http.routers.slowdo-api.rule=Host(`slowdo-api.localhost`)
+      - traefik.http.services.slowdo-api.loadbalancer.server.port=8000
+    networks:
+      - traefik-network
+    working_dir: /app
+    extra_hosts:
+      - host.docker.internal:host-gateway

@@ -1,0 +1,33 @@
+# The Caddyfile is an easy way to configure FrankenPHP and the Caddy web server.
+#
+# https://frankenphp.dev/docs/config
+# https://caddyserver.com/docs/caddyfile
+{
+	skip_install_trust
+	frankenphp
+	order php_server before file_server
+
+	log stdoutlogger {
+		include http.log.access.slowdo-api
+		output stdout
+		format console
+		level {$FRANKENPHP_LOCAL_LOG_LEVEL:ERROR}
+	}
+}
+
+slowdo-api.debug.localhost, :8000 {
+	encode zstd br gzip
+
+	log {
+		output stdout
+		format console
+		level ERROR
+	}
+
+	php_server {
+		try_files {path} index.php
+		root /app/public
+
+		{$FRANKENPHP_LOCAL_CONFIG}
+	}
+}
