@@ -21,7 +21,7 @@ use Symfony\Component\ObjectMapper\ObjectMapperInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-#[Route('/api/s/feedback', name: 'app_feedback')]
+#[Route('/api/feedback', name: 'app_feedback')]
 final class FeedbackController extends AbstractController
 {
     #[Route('/send', name: 'app_feedback_send', methods: 'POST')]
